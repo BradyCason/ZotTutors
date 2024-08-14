@@ -12,8 +12,7 @@
     "pg": "^8.12.0"
   },
   "scripts": {
-    "start": "node app.js",
-    "install": "npm install --omit=dev"
+    "start": "node app.js"
   },
   "devDependencies": {
     "prisma": "^5.18.0"
