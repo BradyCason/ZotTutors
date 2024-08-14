@@ -55,6 +55,10 @@ function loginPost(req, res, next){
     })(req, res, next);
 }
 
+async function loginGet(req, res, next){
+    res.render("login", {numUsers: await db.getNumUsers()})
+}
+
 function logoutGet(req, res, next) {
     req.logout((err) => {
       if (err) {
@@ -67,5 +71,6 @@ function logoutGet(req, res, next) {
 module.exports = {
     signupPost,
     loginPost,
+    loginGet,
     logoutGet
 }

@@ -14,6 +14,24 @@ async function addUser(firstName, lastName, email, hashedPassword, isTutor) {
     await prisma.users.create({ data: user })
 }
 
+async function updateUser(userId, firstName, lastName, email, isTutor) {
+  try {
+    const updatedUser = await prisma.users.update({
+      where: { id: userId },
+      data: {
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        isTutor: isTutor
+      }
+    });
+    console.log('User updated:', updatedUser);
+    return updatedUser;
+  } catch (error) {
+    console.error('Error updating user:', error);
+  }
+}
+
 async function findUserByEmail(email){
     const user = await prisma.users.findUnique({
         where: {
@@ -32,8 +50,14 @@ async function findUserById(id){
       return user;
 }
 
+async function getNumUsers(){
+  return (await prisma.users.count());
+}
+
 module.exports = {
     addUser,
+    updateUser,
     findUserByEmail,
-    findUserById
+    findUserById,
+    getNumUsers
 };
