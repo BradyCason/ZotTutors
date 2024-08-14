@@ -28,8 +28,9 @@ model users {
 
 model classes {
   id        Int    @id @default(autoincrement())
-  className String
   classCode String @unique
+  className String
+  classDesc String
 
   // Relations
   tutors tutorclasses[]

@@ -54,10 +54,45 @@ async function getNumUsers(){
   return (await prisma.users.count());
 }
 
+async function getClasses(){
+  return (await prisma.classes.findMany())
+}
+
+async function getClass(id){
+  return (await prisma.classes.findUnique({
+    where: {
+      id: id
+    }
+  }))
+}
+
+async function getTutors(classId){
+  return (await prisma.tutorclasses.findMany({
+    where: {
+      classId: classId
+    },
+    include: {
+      tutor: true  // Include related User information
+    }
+  })
+)};
+
+async function getTutor(tutorId){
+  return (await prisma.users.findUnique({
+    where: {
+      id: tutorId
+    }
+  })
+)};
+
 module.exports = {
     addUser,
     updateUser,
     findUserByEmail,
     findUserById,
-    getNumUsers
+    getNumUsers,
+    getClasses,
+    getClass,
+    getTutors,
+    getTutor
 };

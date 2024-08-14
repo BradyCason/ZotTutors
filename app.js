@@ -4,6 +4,7 @@ const passport = require('./passport');
 
 const authRouter = require("./routes/authRouter");
 const profileRouter = require("./routes/profileRouter");
+const searchRouter = require("./routes/searchRouter");
 
 const app = express();
 app.set("views", __dirname + "/views");
@@ -21,6 +22,7 @@ function ensureAuthenticated(req, res, next) {
 }
 
 app.use("/", authRouter);
+app.use("/search", searchRouter)
 app.use("/profile", ensureAuthenticated, profileRouter)
 app.get("/", ensureAuthenticated, (req, res) => {res.render("index", {user: req.user})})
 
