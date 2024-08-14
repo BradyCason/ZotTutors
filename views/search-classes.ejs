@@ -15,7 +15,7 @@
     </form> -->
     <ul>
         <% classes.forEach(function(classItem) { %>
-            <li><a href="/search/class/<%= classItem.id %>"><%= classItem.classCode %></a></li>
+            <li><a href="/search/class/<%= classItem.id %>"><%= classItem.classCode %></a></li><p>(<%= classItem._count.tutors %> Tutors)</p>
         <% }); %>
     </ul>
     <a href="/">Back</a>

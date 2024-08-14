@@ -55,7 +55,13 @@ async function getNumUsers(){
 }
 
 async function getClasses(){
-  return (await prisma.classes.findMany())
+  return (await prisma.classes.findMany({
+    include: {
+      _count: {
+        select: { tutors: true }  // Count of related TutorClass entries
+      }
+    }
+  }))
 }
 
 async function getClass(id){
