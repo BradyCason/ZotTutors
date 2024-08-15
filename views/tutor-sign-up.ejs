@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+</head>
+<body>
+  <%- include("./partials/menu-bar.ejs") %>
+  <h1><%= user.firstName %>, sign up to be an anTutor:</h1>
+  <form action="/profile/tutor-sign-up" method="POST">
+    <button type="submit">Sign Up as a Tutor</button>
+  </form>
+  <a href="/">Back to home</a>
+</body>
+</html>

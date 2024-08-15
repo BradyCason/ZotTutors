@@ -20,6 +20,10 @@ model users {
   email     String   @unique
   password  String
   isTutor   Boolean  @default(false)
+  bio       String?
+  availability String?
+  isOnline  Boolean?
+  isInPerson Boolean?
   createdAt DateTime @default(now())
 
   // Relations

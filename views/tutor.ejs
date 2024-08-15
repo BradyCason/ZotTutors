@@ -5,8 +5,28 @@
   <title>Class Search - AnTutorsConnect</title>
 </head>
 <body>
-    <h1><%= tutor.firstName %>, <%= tutor.lastName %></h1>
+    <%- include("./partials/menu-bar.ejs") %>
+    <h1><%= tutor.firstName %> <%= tutor.lastName %></h1>
     <p><%= tutor.email %></p>
+    <p>Bio: <%= tutor.bio %></p>
+    <p>Availability: <%= tutor.availability %></p>
+    <% if (tutor.isOnline && tutor.isInPerson){ %>
+      <p>Willing to meet online or in person.</p>
+    <% }
+    else if (tutor.isOnline) { %>
+      <p>Willing to meet Online.</p>
+    <% }
+    else if (tutor.isInPerson) { %>
+      <p>Willing to meet in person.</p>
+    <% } %>
+    <% if (classesTaught) { %>
+      <p>Classes Taught: </p>
+      <ul>
+        <% classesTaught.forEach(classItem => { %>
+          <li><a href="/search/class/<%= classItem.id %>"><%= classItem.classCode %></a></li>
+        <% }) %>
+      </ul>
+    <% } %>
     <a href="/search">Back</a>
 </body>
 </html>

@@ -5,8 +5,33 @@
   <title><%= user.firstName %> <%= user.lastName %> - AnTutorsConnect</title>
 </head>
 <body>
-    <h1><%= user.firstName %> <%= user.lastName %>!</h1>
+    <%- include("./partials/menu-bar.ejs") %>
+    <h1><%= user.firstName %> <%= user.lastName %></h1>
+    <p><%= user.email %></p>
+    <% if (user.isTutor){ %>
+      <p>Bio: <%= user.bio %></p>
+      <p>Availability: <%= user.availability %></p>
+      <% if (user.isOnline && user.isInPerson){ %>
+        <p>Willing to meet online or in person.</p>
+      <% }
+      else if (user.isOnline) { %>
+        <p>Willing to meet Online.</p>
+      <% }
+      else if (user.isInPerson) { %>
+        <p>Willing to meet in person.</p>
+      <% } %>
+      <% if (classesTaught) { %>
+        <p>Classes Taught: </p>
+        <ul>
+          <% classesTaught.forEach(classItem => { %>
+            <li><a href="/search/class/<%= classItem.id %>"><%= classItem.classCode %></a></li>
+          <% }) %>
+        </ul>
+      <% } %>
+    <% } 
+    else { %>
+      <p>Want to make some money as a Tutor? Sign up to be an anTutor <a href="/profile/tutor-sign-up">here</a>!</p>
+    <% } %>
     <a href="/profile/update">Update Profile</a>
-    <a href="/log-out">Log Out</a>
 </body>
 </html>
