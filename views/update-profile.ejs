@@ -7,39 +7,58 @@
 <body>
   <%- include("./partials/menu-bar.ejs") %>
   <h1>Update Profile</h1>
-  <form action="/profile/update" method="POST">
-    <label for="firstName">First Name:</label>
-    <input id="firstName" name="firstName" placeholder="First Name" value="<%= user.firstName %>" type="text" required/>
-    <label for="lastName">Last Name</label>
-    <input id="lastName" name="lastName" placeholder="Last Name" value="<%= user.lastName %>" type="text" required/>
-    <label for="email">Email: </label>
-    <input id="email" name="email" type="email" value="<%= user.email %>" required/>
     <% if (user.isTutor){ %>
-      <h1>Congrats, <%= user.firstName %>! You are an anTutor!</h1>
-      <h3>The following information will be viewable to possible students:</h3>
-      <label for="bio">Bio:</label>
-      <textarea id="bio" name="bio" rows="4" cols="50"><%= user.bio %></textarea>
-      <label for="availability">Availability:</label>
-      <textarea id="availability" name="availability" rows="4" cols="50"><%= user.availability %></textarea>
-      <label for="isOnline">Willing to meet online: </label>
-      <input id="isOnline" name="isOnline" type="checkbox" <% if (user.isOnline) { %>checked<% } %>/>
-      <label for="isInPerson">Willing to meet in person: </label>
-      <input id="isInPerson" name="isInPerson" type="checkbox" <% if (user.isInPerson) { %>checked<% } %>/>
+      <form action="/profile/update" method="POST">
+        <label for="firstName">First Name:</label>
+        <input id="firstName" name="firstName" placeholder="First Name" value="<%= user.firstName %>" type="text" required/>
+        <label for="lastName">Last Name</label>
+        <input id="lastName" name="lastName" placeholder="Last Name" value="<%= user.lastName %>" type="text" required/>
+        <label for="email">Email: </label>
+        <input id="email" name="email" type="email" value="<%= user.email %>" required/>
+        <h1>Congrats, <%= user.firstName %>! You are an anTutor!</h1>
+        <h3>The following information will be viewable to possible students:</h3>
+        <label for="bio">Bio:</label>
+        <textarea id="bio" name="bio" rows="4" cols="50"><%= user.bio %></textarea>
+        <label for="availability">Availability:</label>
+        <textarea id="availability" name="availability" rows="4" cols="50"><%= user.availability %></textarea>
+        <label for="isOnline">Willing to meet online: </label>
+        <input id="isOnline" name="isOnline" type="checkbox" <% if (user.isOnline) { %>checked<% } %>/>
+        <label for="isInPerson">Willing to meet in person: </label>
+        <input id="isInPerson" name="isInPerson" type="checkbox" <% if (user.isInPerson) { %>checked<% } %>/>
+        <button type="submit">Update</button>
+      </form>
       <h3>Choose which classes you are able to tutor in:</h3>
+      <h1>Class Search</h1>
+      <form action="/profile/search-classes" method="POST">
+        <label for="searchTerm">Search for a class by name or code: </label>
+        <input id="searchTerm" name="searchTerm" placeholder="Search" type="text" />
+        <button type="submit">Search</button>
+      </form>
+      <% if (searched){ %> <a href="/profile/update">See all</a> <% } %>
+    <form action="/profile/update-classes" method="POST">
+      <button type="submit">Update</button>
       <ul>
           <% classes.forEach(function(classItem) { %>
               <li>
-                  <label for="class<%= classItem.id %>"><%= classItem.classCode %></label>
+                  <label for="class<%= classItem.id %>"><%= classItem.classCode %> <%= classItem.className %></label>
                   <input id="class<%= classItem.id %>" name="class<%= classItem.id %>" type="checkbox" <% if (classIdsTaught.includes(classItem.id)) { %>checked<% } %>/>
               </li>
           <% }); %>
       </ul>
+    </form>
     <% } 
     else { %>
+      <form action="/profile/update" method="POST">
+        <label for="firstName">First Name:</label>
+        <input id="firstName" name="firstName" placeholder="First Name" value="<%= user.firstName %>" type="text" required/>
+        <label for="lastName">Last Name</label>
+        <input id="lastName" name="lastName" placeholder="Last Name" value="<%= user.lastName %>" type="text" required/>
+        <label for="email">Email: </label>
+        <input id="email" name="email" type="email" value="<%= user.email %>" required/>
+        <button type="submit">Update Tutoring Classes</button>
+      </form>
       <p>Want to make some money as a Tutor? Sign up to be an anTutor <a href="/profile/tutor-sign-up">here</a>!</p>
     <% } %>
-    <button type="submit">Update</button>
-  </form>
   <%- include("./partials/errors.ejs") %>
 </body>
 </html>

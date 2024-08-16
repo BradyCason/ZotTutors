@@ -61,14 +61,21 @@ async function getNumUsers(){
 }
 
 async function getClasses(searchTerm){
+  const searchTermLower = searchTerm.toLowerCase()
   const response = await fetch('https://api.peterportal.org/rest/v0/courses/all');
   const data = await response.json();
   const tutorClasses = await getAllTutorClasses()
   const classes = await Promise.all(
     data
-    .filter(i => {return(
-      i.id.includes(searchTerm) || i.classCode.includes(searchTerm) || i.className.includes(searchTerm)
-    )})
+    .filter(i => {
+      const idLower = i.id.toLowerCase();
+      const classCodeLower = (i.department + " " + i.number).toLowerCase();
+      const titleLower = i.title.toLowerCase();
+
+      return (idLower.includes(searchTermLower) ||
+            classCodeLower.includes(searchTermLower) ||
+            titleLower.includes(searchTermLower));
+    })
     .map(async i => {
       return { 
           id: i.id,
@@ -114,7 +121,7 @@ async function getTutorClasses(userId){
   });
 
   const classDetailsPromises = tutorClasses.map(async (tutorClass) => {
-    return await getClass(tutorClass.classId); // Assuming getClass is a function that fetches class details
+    return await getClass(tutorClass.classId);
   });
 
   return(await Promise.all(classDetailsPromises))

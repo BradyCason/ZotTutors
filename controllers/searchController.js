@@ -9,7 +9,6 @@ async function searchGet(req, res) {
 
 async function searchPost(req, res) {
     const searchTerm = req.body.searchTerm
-    console.log(searchTerm)
     res.render("search-classes", {
         classes: await db.getClasses(searchTerm),
         searched: true

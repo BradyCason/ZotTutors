@@ -44,7 +44,6 @@ const signupPost = [
             
             await db.addUser(firstName, lastName, email, hashedPassword, false)
         });
-        res.redirect("/");
       }
 ];
 
