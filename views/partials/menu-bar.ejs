@@ -1,6 +1,8 @@
 <a href="/search">Find Tutors</a>
 <% if (typeof user !== 'undefined') { %>
-    <a href="/profile/tutor-sign-up">Become a Tutor</a>
+    <% if (!user.isTutor) { %>
+        <a href="/profile/tutor-sign-up">Become a Tutor</a>
+    <% } %>
     <a href="/profile">Profile</a>
     <a href="/log-out">LOG OUT</a>
 <% } 

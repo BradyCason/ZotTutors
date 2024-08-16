@@ -61,27 +61,63 @@ async function getNumUsers(){
 }
 
 async function getClasses(searchTerm){
-  return (await prisma.classes.findMany({
-    where: {
-      OR: [
-        { classCode: { contains: searchTerm, mode: 'insensitive' } },
-        { className: { contains: searchTerm, mode: 'insensitive' } }
-      ]
-    },
-    include: {
-      _count: {
-        select: { tutors: true }  // Count of related TutorClass entries
+  const response = await fetch('https://api.peterportal.org/rest/v0/courses/all');
+  const data = await response.json();
+  const tutorClasses = await getAllTutorClasses()
+  const classes = await Promise.all(
+    data
+    .filter(i => {return(
+      i.id.includes(searchTerm) || i.classCode.includes(searchTerm) || i.className.includes(searchTerm)
+    )})
+    .map(async i => {
+      return { 
+          id: i.id,
+          classCode: i.department + " " + i.number,
+          classDesc: i.description,
+          className: i.title,
+          numTutors: tutorClasses.reduce((acc, obj) => {
+            return obj.classId === i.id ? acc + 1 : acc;
+          }, 0)
       }
-    }
-  }))
+    }))
+  return(classes)
 }
 
 async function getClass(id){
-  return (await prisma.classes.findUnique({
-    where: {
-      id: id
+  const response = await fetch('https://api.peterportal.org/rest/v0/courses/' + id);
+  const data = await response.json();
+  return { 
+    id: data.id,
+    classCode: data.department + " " + data.number,
+    classDesc: data.description,
+    className: data.title,
+    numTutors: await getTutors(data.id)
+}
+}
+
+async function getAllTutorClasses(){
+  return (await prisma.tutorclasses.findMany({
+    include: {
+      tutor: true  // Include related User information
     }
-  }))
+  })
+)}
+
+async function getTutorClasses(userId){
+  const tutorClasses = await prisma.tutorclasses.findMany({
+    where: {
+      tutorId: userId
+    },
+    select: {
+      classId: true
+    }
+  });
+
+  const classDetailsPromises = tutorClasses.map(async (tutorClass) => {
+    return await getClass(tutorClass.classId); // Assuming getClass is a function that fetches class details
+  });
+
+  return(await Promise.all(classDetailsPromises))
 }
 
 async function getTutors(classId){
@@ -102,25 +138,6 @@ async function getTutor(tutorId){
     }
   })
 )};
-
-async function getTutorClasses(userId){
-  return await prisma.classes.findMany({
-    where: {
-      tutors: {
-        some: {
-          tutorId: userId
-        }
-      }
-    },
-    include: {
-      tutors: {
-        where: {
-          tutorId: userId
-        }
-      }
-    }
-  });
-}
 
 async function makeTutor(userId){
   await prisma.users.update({
@@ -151,19 +168,6 @@ async function addTutorClass(tutorId, classId){
   }})
 }
 
-async function addClass(classCode, className, classDesc){
-  try{
-    await prisma.classes.create({ data: { 
-      classCode: classCode,
-      classDesc: classDesc,
-      className: className
-     }})
-  }
-  catch{
-    console.log(classCode)
-  }
-}
-
 module.exports = {
     addUser,
     updateUser,
@@ -175,9 +179,9 @@ module.exports = {
     getTutors,
     getTutor,
     getTutorClasses,
+    getAllTutorClasses,
     makeTutor,
     removeTutor,
     removeTutorClasses,
-    addTutorClass,
-    addClass
+    addTutorClass
 };

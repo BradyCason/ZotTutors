@@ -14,9 +14,12 @@
     </form>
     <% if (searched){ %> <a href="/search">See all</a> <% } %>
     <ul>
-        <% classes.forEach(function(classItem) { %>
-            <li><a href="/search/class/<%= classItem.id %>"><%= classItem.classCode %></a><p>(<%= classItem._count.tutors %> Tutors)</p></li>
-        <% }); %>
+        <% if (classes) { classes.forEach(function(classItem) { %>
+            <li><a href="/search/class/<%= classItem.id %>"><%= classItem.classCode %></a><p>(<%= classItem.numTutors %> Tutors)</p></li>
+        <% })}
+        else { %>
+            <p>No classes found.</p>
+        <% } %>
     </ul>
     <a href="/">Back</a>
 </body>

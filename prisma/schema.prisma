@@ -30,21 +30,10 @@ model users {
   tutorClasses  tutorclasses[] // A tutor can have multiple classes
 }
 
-model classes {
-  id        Int    @id @default(autoincrement())
-  classCode String @unique
-  className String
-  classDesc String
-
-  // Relations
-  tutors tutorclasses[]
-}
-
 model tutorclasses {
   tutorId  Int
-  classId  Int
+  classId  String
   tutor    users  @relation(fields: [tutorId], references: [id], onDelete: Cascade)
-  class    classes @relation(fields: [classId], references: [id], onDelete: Cascade)
 
   @@id([tutorId, classId]) // Composite primary key
 }

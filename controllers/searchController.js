@@ -18,8 +18,8 @@ async function searchPost(req, res) {
 
 async function classGet(req, res) {
     res.render("class", {
-        classItem: await db.getClass(Number(req.params.classId)),
-        tutors: await db.getTutors(Number(req.params.classId))
+        classItem: await db.getClass(req.params.classId),
+        tutors: await db.getTutors(req.params.classId)
     })
 }
 
