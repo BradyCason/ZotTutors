@@ -1,0 +1,54 @@
+/* Profile container with box around it */.profile-container {
+    max-width: 800px;
+    margin-top: 20px;
+    margin-right: auto;
+    margin-left: auto;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0010px rgba(0, 0, 0, 0.1);
+    border: 2px solid var(--primary-color); /* Using CSS variable */
+  }
+  
+  /* Profile name */.profile-name {
+    font-size: 2em;
+    margin-bottom: 10px;
+    color: var(--primary-color); /* Using CSS variable */
+  }
+  
+  .profile-header{
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  /* Profile email */.profile-email {
+    font-size: 1.2em;
+    margin-bottom: 20px;
+  }
+  
+  /* Tutor information */.tutor-info {
+    margin-bottom: 20px;
+  }
+  
+  .profile-bio, 
+  .profile-availability, 
+  .profile-rate,
+  .profile-meeting {
+    margin-bottom: 10px;
+  }
+  
+  .update-profile-btn, .back-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    background-color: var(--primary-color);
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+  }
+  
+  .update-profile-btn:hover {
+    background-color: var(--secondary-color); /* Using CSS variable */
+  }

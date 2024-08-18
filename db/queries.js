@@ -146,6 +146,27 @@ async function getTutor(tutorId){
   })
 )};
 
+async function searchTutors(firstName, lastName){
+  firstName = firstName.toLowerCase()
+  lastName = lastName.toLowerCase()
+  let queryConditions = {}
+  if (firstName) {
+    queryConditions.firstName = {
+      contains: firstName,
+      mode: 'insensitive',
+    };
+  }
+  if (lastName) {
+    queryConditions.lastName = {
+      contains: lastName,
+      mode: 'insensitive',
+    };
+  }
+  return (await prisma.users.findMany({
+    where: queryConditions
+  }))
+};
+
 async function makeTutor(userId){
   await prisma.users.update({
     where: { id: userId },
@@ -184,6 +205,7 @@ module.exports = {
     getClasses,
     getClass,
     getTutors,
+    searchTutors,
     getTutor,
     getTutorClasses,
     getAllTutorClasses,

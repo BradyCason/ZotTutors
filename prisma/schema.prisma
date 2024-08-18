@@ -22,12 +22,13 @@ model users {
   isTutor   Boolean  @default(false)
   bio       String?
   availability String?
+  rate         Float    @default(0.0)
   isOnline  Boolean?
   isInPerson Boolean?
   createdAt DateTime @default(now())
 
   // Relations
-  tutorClasses  tutorclasses[] // A tutor can have multiple classes
+  tutorClasses  tutorclasses[]
 }
 
 model tutorclasses {

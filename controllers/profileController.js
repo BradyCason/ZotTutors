@@ -77,7 +77,7 @@ async function updateClassesPost(req, res, next) {
 async function profileGet(req, res) {
     res.render("profile", {
       user: req.user,
-      classesTaught: await db.getTutorClasses(req.user.id)
+      classes: await db.getTutorClasses(req.user.id)
     })
 }
 

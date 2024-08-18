@@ -1,37 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title><%= user.firstName %> <%= user.lastName %> - AnTutorsConnect</title>
-</head>
-<body>
-    <%- include("./partials/menu-bar.ejs") %>
-    <h1><%= user.firstName %> <%= user.lastName %></h1>
-    <p><%= user.email %></p>
-    <% if (user.isTutor){ %>
-      <p>Bio: <%= user.bio %></p>
-      <p>Availability: <%= user.availability %></p>
-      <% if (user.isOnline && user.isInPerson){ %>
-        <p>Willing to meet online or in person.</p>
-      <% }
-      else if (user.isOnline) { %>
-        <p>Willing to meet Online.</p>
-      <% }
-      else if (user.isInPerson) { %>
-        <p>Willing to meet in person.</p>
+<!DOCTYPE html><html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title><%= user.firstName %> <%= user.lastName %> - AnTutorsConnect</title>
+    <link rel="stylesheet" href="/stylesheets/styles.css">
+    <link rel="stylesheet" href="/stylesheets/profile.css">
+    <link rel="stylesheet" href="/stylesheets/list.css">
+    <link rel="icon" href="/images/logo.png">
+  </head>
+  <body>
+
+  <%- include("./partials/menu-bar.ejs") %>
+
+  <div class="profile-container">
+    <div class="profile-header">
+      <h1 class="profile-name"><%= user.firstName %> <%= user.lastName %></h1>
+      <a class="update-profile-btn" href="/profile/update">Update Profile</a>  
+    </div>
+    <p class="profile-email"><%= user.email %></p>
+
+      <% if (user.isTutor) { %>
+          <div class="tutor-info">
+            <p class="profile-bio">Bio: <%= user.bio %></p>
+            <p class="profile-availability">Availability: <%= user.availability %></p>
+            <p class="profile-rate">Rate: $<%= user.rate %>/ hour</p>
+
+              <% if (user.isOnline && user.isInPerson) { %>
+                  <p class="profile-meeting">Willing to meet online or in person.</p>
+              <% } else if (user.isOnline) { %>
+                  <p class="profile-meeting">Willing to meet Online.</p>
+              <% } else if (user.isInPerson) { %>
+                  <p class="profile-meeting">Willing to meet in person.</p>
+              <% } %>
+
+              <% if (classes.length >= 1) { %>
+                  <p class="profile-classes">Classes Taught:</p>
+                  <%- include("./partials/class-list.ejs") %>
+              <% } %>
+          </div>
+      <% } else { %>
+          <p class="tutor-signup">Want to make some money as a Tutor? Sign up to be an anTutor <a href="/profile/tutor-sign-up">here</a>!</p>
       <% } %>
-      <% if (classesTaught) { %>
-        <p>Classes Taught: </p>
-        <ul>
-          <% classesTaught.forEach(classItem => { %>
-            <li><a href="/search/class/<%= classItem.id %>"><%= classItem.classCode %></a></li>
-          <% }) %>
-        </ul>
-      <% } %>
-    <% } 
-    else { %>
-      <p>Want to make some money as a Tutor? Sign up to be an anTutor <a href="/profile/tutor-sign-up">here</a>!</p>
-    <% } %>
-    <a href="/profile/update">Update Profile</a>
-</body>
-</html>
+    </div>
+  </body>
+  </html>

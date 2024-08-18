@@ -3,16 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <title>Class Search - AnTutorsConnect</title>
+  <link rel="stylesheet" href="/stylesheets/styles.css">
+  <link rel="icon" href="/images/logo.png">
 </head>
 <body>
     <%- include("./partials/menu-bar.ejs") %>
     <h1><%= classItem.classCode %>, <%= classItem.className %></h1>
     <p><%= classItem.classDesc %></p>
-    <ul>
-        <% tutors.forEach(function(tutor) { %>
-            <li><a href="/search/tutor/<%= tutor.tutor.id %>"><%= tutor.tutor.firstName %> <%= tutor.tutor.lastName %></a></li>
-        <% }); %>
-    </ul>
+    <%- include("./partials/tutor-list.ejs") %>
     <a href="/search">Back</a>
 </body>
 </html>

@@ -3,18 +3,31 @@
 <head>
   <meta charset="UTF-8">
   <title>Login - AnTutorsConnect</title>
+  <link rel="stylesheet" href="/stylesheets/auth.css">
+  <link rel="icon" href="/images/logo.png">
 </head>
 <body>
-    <h1>Log In</h1>
-    <form action="/log-in" method="POST">
-      <label for="email">Email: </label>
-      <input id="email" name="email" placeholder="Email" type="email" />
-      <label for="password">Password</label>
-      <input id="password" name="password" type="password" />
-      <button type="submit">Log In</button>
-    </form>
-    <a href="/search">Search For Tutors as Guest</a>
-    <p>Don't have an account yet? Join our community of <%= numUsers %> Students and Tutors!</p>
-    <a href="/sign-up">Sign Up</a>
+  <div class="auth-container">
+    <div class="promo-text">
+      <h1 class="promo-text">AnTutor Connect</h1>
+      <p class="promo-text">Log in to find students to tutor or find the right tutors for you!</p>
+    </div>
+    <div class="auth-form">
+      <h1>Log In</h1>
+      <form action="/log-in" method="POST">
+        <label for="email">Email: </label>
+        <input class="auth-form" id="email" name="email" placeholder="Email" type="email" />
+        <label for="password">Password</label>
+        <input id="password" name="password" placeholder="Password" type="password" />
+        <div class="auth-buttons">
+          <button type="submit">Log In</button>
+          <a href="/search">Log In as Guest</a>
+        </div>
+      </form>
+      <div class="other-method">
+        <p>Don't have an account yet? <a href="/sign-up">Sign Up</a> to join our community of <%= numUsers %> Students and Tutors!</p>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

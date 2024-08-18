@@ -3,30 +3,37 @@
 <head>
   <meta charset="UTF-8">
   <title>Class Search - AnTutorsConnect</title>
+  <link rel="stylesheet" href="/stylesheets/styles.css">
+  <link rel="stylesheet" href="/stylesheets/profile.css">
+  <link rel="stylesheet" href="/stylesheets/list.css">
+  <link rel="icon" href="/images/logo.png">
 </head>
 <body>
     <%- include("./partials/menu-bar.ejs") %>
-    <h1><%= tutor.firstName %> <%= tutor.lastName %></h1>
-    <p><%= tutor.email %></p>
-    <p>Bio: <%= tutor.bio %></p>
-    <p>Availability: <%= tutor.availability %></p>
-    <% if (tutor.isOnline && tutor.isInPerson){ %>
-      <p>Willing to meet online or in person.</p>
-    <% }
-    else if (tutor.isOnline) { %>
-      <p>Willing to meet Online.</p>
-    <% }
-    else if (tutor.isInPerson) { %>
-      <p>Willing to meet in person.</p>
-    <% } %>
-    <% if (classesTaught) { %>
-      <p>Classes Taught: </p>
-      <ul>
-        <% classesTaught.forEach(classItem => { %>
-          <li><a href="/search/class/<%= classItem.id %>"><%= classItem.classCode %></a></li>
-        <% }) %>
-      </ul>
-    <% } %>
-    <a href="/search">Back</a>
+    <div class="profile-container">
+      <div class="profile-header">
+        <h1 class="profile-name"><%= tutor.firstName %> <%= tutor.lastName %></h1>
+      </div>
+      <p class="profile-email"><%= tutor.email %></p>
+      <div class="tutor-info">
+        <p class="profile-bio">Bio: <%= tutor.bio %></p>
+        <p class="profile.availability">Availability: <%= tutor.availability %></p>
+        <p class="profile-rate">Rate: $<%= tutor.rate %>/ hour</p>
+        <% if (tutor.isOnline && tutor.isInPerson){ %>
+          <p class="profile-meeting">Willing to meet online or in person.</p>
+        <% }
+        else if (tutor.isOnline) { %>
+          <p class="profile-meeting">Willing to meet Online.</p>
+        <% }
+        else if (tutor.isInPerson) { %>
+          <p class="profile-meeting">Willing to meet in person.</p>
+        <% } %>
+        <% if (classes.length >= 1) { %>
+          <p class="profile-classes">Classes Taught:</p>
+          <%- include("./partials/class-list.ejs") %>
+        <% } %>
+      </div>
+      <a class="back-button" href="/search">Back to Search</a>
+    </div>
 </body>
 </html>

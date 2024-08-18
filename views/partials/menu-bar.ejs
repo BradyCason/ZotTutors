@@ -1,12 +1,20 @@
-<a href="/search">Find Tutors</a>
-<% if (typeof user !== 'undefined') { %>
-    <% if (!user.isTutor) { %>
-        <a href="/profile/tutor-sign-up">Become a Tutor</a>
-    <% } %>
-    <a href="/profile">Profile</a>
-    <a href="/log-out">LOG OUT</a>
-<% } 
-else { %>
-    <a href="/sign-up">Sign Up</a>
-    <a href="/log-in">Log In</a>
-<% } %>
+<div class="navbar">
+    <div class="navbar-header">
+        <img class="navbar-img" href="/images/logo.png">
+        <h1 class="navbar-title">AnTutor Connect</h1>
+    </div>
+    <div class="navbar-links">
+        <a class="navbar-link" href="/search">Find Tutors</a>
+        <% if (typeof user !== 'undefined') { %>
+            <% if (!user.isTutor) { %>
+                <a class="navbar-link" href="/profile/tutor-sign-up">Become a Tutor</a>
+            <% } %>
+            <a class="navbar-link" href="/profile">Profile</a>
+            <a class="navbar-link" href="/log-out">LOG OUT</a>
+        <% } 
+        else { %>
+            <a class="navbar-link" href="/sign-up">Sign Up</a>
+            <a class="navbar-link" href="/log-in">Log In</a>
+        <% } %>
+    </div>
+</div>

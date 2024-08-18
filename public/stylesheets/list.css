@@ -1,0 +1,35 @@
+.list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    margin:auto;
+    width: max-content;
+  }
+  
+.list-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff; /* Background color for the button */
+    color: white; /* Text color */
+    text-decoration: none; /* Remove underline from links */
+    border-radius: 5px; /* Rounded corners */
+    font-weight: bold; /* Bold text */
+    font-size: 1em; /* Font size */
+    transition: background-color 0.3s, transform 0.2s; /* Smooth transition effects */
+    text-align: center;
+  }
+  
+.list-button:hover {
+    background-color: #0056b3; /* Darker background color on hover */
+    transform: scale(1.05); /* Slightly enlarge button on hover */
+  }
+  
+.no-classes {
+    text-align: center; /* Center the no classes message */
+    color: #888; /* Light gray color */
+    font-style: italic; /* Italicize the message */
+  }
