@@ -70,6 +70,18 @@ body {
   color: #fff;
 }
 
+.back-link {
+  display: block;
+  text-align: center;
+  color: #007bff;
+  text-decoration: none;
+  margin-top: 20px;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
 @media (max-width: 768px) {
   .navbar {
       flex-direction: column;

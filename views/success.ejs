@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Zot Tutors</title>
+  <link rel="stylesheet" href="/stylesheets/styles.css">
+  <link rel="stylesheet" href="/stylesheets/home.css">
+  <link rel="icon" href="/images/logo.png">
+</head>
+<body>
+    <%- include("./partials/menu-bar.ejs") %>
+    
+    <div class="homepage-container">
+        <h1>Congrats, <%= user.firstName %>, you are now a Zot Tutor!</h1>
+        
+        <div class="homepage-buttons">
+            <a href="/profile" class="button">Create Your Tutor Profile</a>
+        </div>
+    </div>
+</body>
+</html>

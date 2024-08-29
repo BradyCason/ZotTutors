@@ -1,8 +1,11 @@
 .homepage-container {
     max-width: 800px;
     margin: 0 auto;
-    padding: 40px 20px;
-    text-align: center;
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .welcome-section {
@@ -25,7 +28,7 @@
     gap: 20px;
 }
 
-.homepage-buttons .button {
+.homepage-buttons .button, .payment-button {
     background-color: var(--primary-color);
     color: white;
     padding: 15px 30px;
@@ -35,6 +38,23 @@
     transition: background-color 0.3s;
 }
 
-.homepage-buttons .button:hover {
+.homepage-buttons .button:hover, .payment-button:hover {
     background-color: var(--secondary-color); /* Adjust hover color */
+}
+
+.homepage-container h3 {
+    color: #007bff;
+    margin-bottom: 10px;
+  }
+  
+.homepage-container ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.homepage-container li {
+    background: #e9ecef;
+    margin: 5px 0;
+    padding: 10px;
+    border-radius: 4px;
 }

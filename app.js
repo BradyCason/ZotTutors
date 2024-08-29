@@ -6,6 +6,7 @@ const path = require('path');
 const authRouter = require("./routes/authRouter");
 const profileRouter = require("./routes/profileRouter");
 const searchRouter = require("./routes/searchRouter");
+const paymentRouter = require("./routes/paymentRouter");
 
 const app = express();
 app.set("views", __dirname + "/views");
@@ -26,8 +27,9 @@ function ensureAuthenticated(req, res, next) {
 }
 
 app.use("/", authRouter);
-app.use("/search", searchRouter)
-app.use("/profile", ensureAuthenticated, profileRouter)
+app.use("/search", searchRouter);
+app.use("/profile", ensureAuthenticated, profileRouter);
+app.use("/payment", paymentRouter);
 app.get("/", ensureAuthenticated, (req, res) => {res.render("index", {user: req.user})})
 
 const PORT = process.env.PORT || 3000;

@@ -2,16 +2,53 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>AnTutor Connect</title>
+  <title>Zot Tutors</title>
   <link rel="stylesheet" href="/stylesheets/styles.css">
+  <link rel="stylesheet" href="/stylesheets/home.css">
   <link rel="icon" href="/images/logo.png">
 </head>
 <body>
   <%- include("./partials/menu-bar.ejs") %>
-  <h1><%= user.firstName %>, sign up to be an anTutor:</h1>
-  <form action="/profile/tutor-sign-up" method="POST">
-    <button type="submit">Sign Up as a Tutor</button>
-  </form>
-  <a href="/">Back to home</a>
+  <div class="homepage-container">
+    <h1 class="page-title"><%= user.firstName %>, sign up to be a Zot Tutor:</h1>
+
+    <div class="welcome-section">
+      <ul>
+        <li>Allow all UCI students to find you by class</li>
+        <li>Select your own hourly rate and availability</li>
+        <li>Select the classes you are willing to tutor in</li>
+        <li>Make some extra cash while at school</li>
+      </ul>
+    </div>
+
+    <form id="payment-form" action="/payment/create-checkout-session" method="POST" class="payment-form">
+      <div class="homepage-buttons">
+        <button type="submit" class="payment-button">Become a Tutor for $5</button>
+      </div>
+      <input type="hidden" name="userId" value="<%= user.id %>">
+    </form>
+
+    <a href="/" class="back-link">Back to home</a>
+  </div>
+
+  <script src="https://js.stripe.com/v3/"></script>
+  <script>
+      const form = document.getElementById('payment-form');
+      form.addEventListener('submit', async (event) => {
+          event.preventDefault();
+          const response = await fetch('/payment/create-checkout-session', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ userId: '<%= user.id %>' })
+          });
+
+          const session = await response.json();
+          //const stripe = Stripe('pk_test_51PtDdd08ah2yyFOSVuWlfwRwvhfX8nAJZEepPBEAqRnzmjUUuHnAGZh9Lv2ocdppkirOg9tTHrgCmbOILZyJn2MF00h5XqFANF');
+          const stripe = Stripe('pk_live_51PtDdd08ah2yyFOSQhvSU40WebElIj6gsj2iBgRKXvpIy2Fm6Zp6VG1lFRKCc63jT7zMQA9Y8INvsWW4sJBJrlRf00UiNl67O0');
+          await stripe.redirectToCheckout({ sessionId: session.id });
+      });
+  </script>
 </body>
 </html>
