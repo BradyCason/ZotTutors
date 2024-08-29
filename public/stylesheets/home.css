@@ -1,0 +1,40 @@
+.homepage-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.welcome-section {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.welcome-section p {
+    font-size: 18px;
+    color: #333;
+    margin: 10px 0;
+}
+
+.homepage-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.homepage-buttons .button {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 15px 30px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.homepage-buttons .button:hover {
+    background-color: var(--secondary-color); /* Adjust hover color */
+}

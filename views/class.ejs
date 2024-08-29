@@ -4,13 +4,24 @@
   <meta charset="UTF-8">
   <title>Class Search - AnTutorsConnect</title>
   <link rel="stylesheet" href="/stylesheets/styles.css">
+  <link rel="stylesheet" href="/stylesheets/profile.css">
+  <link rel="stylesheet" href="/stylesheets/list.css">
   <link rel="icon" href="/images/logo.png">
 </head>
 <body>
     <%- include("./partials/menu-bar.ejs") %>
-    <h1><%= classItem.classCode %>, <%= classItem.className %></h1>
-    <p><%= classItem.classDesc %></p>
-    <%- include("./partials/tutor-list.ejs") %>
-    <a href="/search">Back</a>
+    <div class="profile-container">
+        <div class="profile-header">
+            <h1><%= classItem.classCode %>, <%= classItem.className %></h1>
+        </div>
+        <div class="tutor-info">
+            <p><%= classItem.classDesc %></p>
+            <% if (tutors.length > 0) { %>
+                <p class="profile-classes"><b>Tutor<% if (tutors.length > 1) { %>s<% } %>: </b></p>
+                <%- include("./partials/tutor-list.ejs") %>
+            <% } %>
+        </div>
+        <a class="back-button" href="javascript:history.back()">Back</a>
+    </div>
 </body>
 </html>

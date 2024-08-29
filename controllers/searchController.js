@@ -5,17 +5,18 @@ async function searchGet(req, res) {
         classes: [],
         tutors: [],
         searched: false,
-        user: req.user
+        user: req.user,
+        departments: await db.getDepartments()
     })
 }
 
 async function searchClassesPost(req, res) {
-    const searchTerm = req.body.searchTerm
     res.render("search", {
-        classes: await db.getClasses(searchTerm),
+        classes: await db.getClasses(req.body.searchTerm, req.body.department),
         tutors: [],
         searched: true,
-        user: req.user
+        user: req.user,
+        departments: await db.getDepartments()
     })
 }
 
@@ -26,7 +27,8 @@ async function searchTutorsPost(req, res) {
         classes: [],
         tutors: await db.searchTutors(firstName, lastName),
         searched: true,
-        user: req.user
+        user: req.user,
+        departments: await db.getDepartments()
     })
 }
 

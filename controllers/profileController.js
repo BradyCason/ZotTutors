@@ -21,19 +21,12 @@ const checkEmailExists = async (req, res, next) => {
   
     if (user && user.id !== req.user.id) {
       updateGet(req, res, {errors: [{ msg: 'Email already in use' }]})
-      // return res.status(400).render("update-profile", {
-      //   errors: [{ msg: 'Email already in use' }],
-      //   user: req.user,
-      //   classes: await db.getClasses(""),
-      //   classIdsTaught: classIds,
-      //   searched: false
-      // });
     }
   
     next();
   };
 
-const updatePost = [
+const updateProfilePost = [
     validateProfileUpdate,
     checkEmailExists,
     async (req, res, next) => {
@@ -43,7 +36,7 @@ const updatePost = [
         }
 
         if (req.user.isTutor){
-          const { firstName, lastName, email, bio, availability } = req.body;
+          const { firstName, lastName, email, bio, rate, availability } = req.body;
           const isOnline = req.body.isOnline ? true : false;
           const isInPerson = req.body.isInPerson ? true : false;
           await db.updateUser(req.user.id, {
@@ -51,6 +44,7 @@ const updatePost = [
             lastName: lastName,
             email: email,
             bio: bio,
+            rate: Number(rate),
             availability: availability,
             isOnline, isOnline,
             isInPerson, isInPerson
@@ -65,10 +59,12 @@ const updatePost = [
 ];
 
 async function updateClassesPost(req, res, next) {
-  await db.removeTutorClasses(req.user.id)
   for (const key in req.body) {
     if (req.body.hasOwnProperty(key) && key.startsWith('class')) {
-      await db.addTutorClass(req.user.id, key.slice(5, key.length))
+      const classId = key.slice(5, key.length)
+      await db.removeTutorClass(req.user.id, classId)
+      console.log(classId)
+      await db.addTutorClass(req.user.id, classId)
     }
   }
   next()
@@ -81,7 +77,7 @@ async function profileGet(req, res) {
     })
 }
 
-async function updateGet(req, res, {errors}) {
+async function updateProfileGet(req, res, {errors}) {
     const classesTaught = await db.getTutorClasses(req.user.id);
     const classIds = classesTaught.map(classItem => classItem.id);
     if (errors){
@@ -89,22 +85,37 @@ async function updateGet(req, res, {errors}) {
         errors: errors,
         user: req.user,
         classes: await db.getClasses(""),
-        classIdsTaught: classIds,
-        searched: false
+        classIdsTaught: classIds
       })
     }
     else{
       res.render("update-profile", {
         user: req.user,
         classes: await db.getClasses(""),
-        classIdsTaught: classIds,
-        searched: false
+        classIdsTaught: classIds
       })
     }
 }
 
+async function updateClassesGet(req, res){
+  const classesTaught = await db.getTutorClasses(req.user.id);
+  const classIds = classesTaught.map(classItem => classItem.id);
+  let classes = []
+  if(req.query.searchTerm == "" || req.query.department == ""){
+    classes = await db.getClasses("")
+  }
+  res.render("update-classes",{
+    user: req.user,
+    classes: classes,
+    classIdsTaught: classIds,
+    classesTaught: classesTaught,
+    searched: false,
+    departments: await db.getDepartments()
+  })
+}
+
 async function tutorPost(req, res){
-    await db.updateTutor(req.body.bio, req.body.availability, req.body.isOnline, req.body.isInPerson)
+    await db.updateTutor(req.body.bio, req.body.availability, req.body.rate, req.body.isOnline, req.body.isInPerson)
 }
 
 async function tutorSignUpGet(req, res) {
@@ -126,22 +137,41 @@ async function tutorRemovePost(req, res){
 async function updateClassesSearchPost(req, res){
   const classesTaught = await db.getTutorClasses(req.user.id);
   const classIds = classesTaught.map(classItem => classItem.id);
-  res.render("update-profile", {
+  res.render("update-classes", {
     user: req.user,
-    classes: await db.getClasses(req.body.searchTerm),
+    classes: await db.getClasses(req.body.searchTerm, req.body.department),
     classIdsTaught: classIds,
-    searched: true
+    classesTaught: classesTaught,
+    departments: await db.getDepartments()
   })
+}
+
+async function addClassPost(req, res) {
+  if (await db.isTutorClass(req.user.id, req.params.classId)){
+    res.sendStatus(409)
+  }
+  else{
+    await db.addTutorClass(req.user.id, req.params.classId)
+    res.sendStatus(200)
+  }
+}
+
+async function removeClassPost(req, res) {
+  await db.removeTutorClass(req.user.id, req.params.classId)
+  res.sendStatus(200)
 }
 
 module.exports = {
     profileGet,
-    updateGet,
-    updatePost,
+    updateProfileGet,
+    updateClassesGet,
+    updateProfilePost,
     updateClassesPost,
     tutorPost,
     tutorSignUpGet,
     tutorSignUpPost,
     tutorRemovePost,
-    updateClassesSearchPost
+    updateClassesSearchPost,
+    addClassPost,
+    removeClassPost
 }

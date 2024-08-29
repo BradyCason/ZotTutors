@@ -14,13 +14,14 @@ async function addUser(firstName, lastName, email, hashedPassword, isTutor) {
     await prisma.users.create({ data: user })
 }
 
-async function updateUser(userId, { firstName, lastName, email, isTutor, bio, availability, isOnline, isInPerson }) {
+async function updateUser(userId, { firstName, lastName, email, rate, isTutor, bio, availability, isOnline, isInPerson }) {
   try {
     const updateData = {};
     
     if (firstName !== undefined) updateData.firstName = firstName;
     if (lastName !== undefined) updateData.lastName = lastName;
     if (email !== undefined) updateData.email = email;
+    if (rate !== undefined) updateData.rate = rate;
     if (isTutor !== undefined) updateData.isTutor = isTutor;
     if (bio !== undefined) updateData.bio = bio;
     if (availability !== undefined) updateData.availability = availability;
@@ -60,7 +61,7 @@ async function getNumUsers(){
   return (await prisma.users.count());
 }
 
-async function getClasses(searchTerm){
+async function getClasses(searchTerm, department = "All"){
   const searchTermLower = searchTerm.toLowerCase()
   const response = await fetch('https://api.peterportal.org/rest/v0/courses/all');
   const data = await response.json();
@@ -72,9 +73,12 @@ async function getClasses(searchTerm){
       const classCodeLower = (i.department + " " + i.number).toLowerCase();
       const titleLower = i.title.toLowerCase();
 
-      return (idLower.includes(searchTermLower) ||
-            classCodeLower.includes(searchTermLower) ||
-            titleLower.includes(searchTermLower));
+      searchCondition = (idLower.includes(searchTermLower) ||
+        classCodeLower.includes(searchTermLower) ||
+        titleLower.includes(searchTermLower))
+      depCondition = (department == "All" || i.department == department)
+
+      return (searchCondition && depCondition);
     })
     .map(async i => {
       return { 
@@ -84,22 +88,53 @@ async function getClasses(searchTerm){
           className: i.title,
           numTutors: tutorClasses.reduce((acc, obj) => {
             return obj.classId === i.id ? acc + 1 : acc;
-          }, 0)
+          }, 0),
+          department: i.department,
+          departmentName: i.department_name,
+          courseNumber: parseInt(i.number, 10)
       }
     }))
-  return(classes)
+    
+    classes.sort((a, b) => {
+      const departmentComparison = a.department.localeCompare(b.department);
+      if (departmentComparison !== 0) {
+        return departmentComparison;
+      }
+      return a.courseNumber - b.courseNumber;
+    });
+  
+    return classes;
 }
 
 async function getClass(id){
   const response = await fetch('https://api.peterportal.org/rest/v0/courses/' + id);
   const data = await response.json();
+  const tutorClasses = await getAllTutorClasses()
   return { 
     id: data.id,
     classCode: data.department + " " + data.number,
     classDesc: data.description,
     className: data.title,
-    numTutors: await getTutors(data.id)
+    numTutors: await getTutors(data.id),
+    numTutors: tutorClasses.reduce((acc, obj) => {
+      return obj.classId === data.id ? acc + 1 : acc;
+    }, 0),
+  }
 }
+
+async function getDepartments(){
+  const classes = await getClasses("");
+  const departmentMap = new Map();
+
+  // Iterate over the classes and add each unique department to the Map
+  classes.forEach(classItem => {
+    if (classItem.department && !departmentMap.has(classItem.department)) {
+      departmentMap.set(classItem.department, classItem.departmentName);
+    }
+  });
+
+  // Convert the Map to an array of objects
+  return Array.from(departmentMap, ([department, departmentName]) => ({ department, departmentName }));
 }
 
 async function getAllTutorClasses(){
@@ -128,7 +163,7 @@ async function getTutorClasses(userId){
 }
 
 async function getTutors(classId){
-  return (await prisma.tutorclasses.findMany({
+  tutors = await prisma.tutorclasses.findMany({
     where: {
       classId: classId
     },
@@ -136,7 +171,8 @@ async function getTutors(classId){
       tutor: true  // Include related User information
     }
   })
-)};
+  return (tutors.map(tutor => tutor.tutor))
+};
 
 async function getTutor(tutorId){
   return (await prisma.users.findUnique({
@@ -146,26 +182,32 @@ async function getTutor(tutorId){
   })
 )};
 
-async function searchTutors(firstName, lastName){
-  firstName = firstName.toLowerCase()
-  lastName = lastName.toLowerCase()
-  let queryConditions = {}
-  if (firstName) {
+async function searchTutors(firstName = "", lastName = "") {
+  firstName = firstName.toLowerCase();
+  lastName = lastName.toLowerCase();
+
+  let queryConditions = {
+    isTutor: true
+  };
+
+  if (firstName !== "") {
     queryConditions.firstName = {
       contains: firstName,
       mode: 'insensitive',
     };
   }
-  if (lastName) {
+
+  if (lastName !== "") {
     queryConditions.lastName = {
       contains: lastName,
       mode: 'insensitive',
     };
   }
-  return (await prisma.users.findMany({
+
+  return await prisma.users.findMany({
     where: queryConditions
-  }))
-};
+  });
+}
 
 async function makeTutor(userId){
   await prisma.users.update({
@@ -184,16 +226,43 @@ async function removeTutor(userId){
 async function removeTutorClasses(tutorId){
   await prisma.tutorclasses.deleteMany({
     where: {
-      tutorId: tutorId,  // Replace userID with the actual ID you want to delete
+      tutorId: tutorId,
+    },
+  });
+}
+
+async function removeTutorClass(tutorId, classId){
+  await prisma.tutorclasses.deleteMany({
+    where: {
+      AND : {
+        tutorId: tutorId,
+        classId: classId
+      }
     },
   });
 }
 
 async function addTutorClass(tutorId, classId){
-  await prisma.tutorclasses.create({ data: {
-    tutorId: tutorId,
-    classId: classId
-  }})
+  const tutorClasses = await getTutorClasses(tutorId)
+  if (!tutorClasses.includes(classId)){
+    await prisma.tutorclasses.create({ data: {
+      tutorId: tutorId,
+      classId: classId
+    }})
+  }
+}
+
+async function isTutorClass(tutorId, classId) {
+  const tutorClass = await prisma.tutorclasses.findUnique({
+    where: {
+      tutorId_classId: {
+        tutorId: tutorId,
+        classId: classId,
+      },
+    },
+  });
+
+  return tutorClass !== null;
 }
 
 module.exports = {
@@ -204,6 +273,7 @@ module.exports = {
     getNumUsers,
     getClasses,
     getClass,
+    getDepartments,
     getTutors,
     searchTutors,
     getTutor,
@@ -212,5 +282,7 @@ module.exports = {
     makeTutor,
     removeTutor,
     removeTutorClasses,
-    addTutorClass
+    removeTutorClass,
+    addTutorClass,
+    isTutorClass
 };

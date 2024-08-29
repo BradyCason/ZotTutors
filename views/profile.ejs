@@ -14,32 +14,39 @@
   <div class="profile-container">
     <div class="profile-header">
       <h1 class="profile-name"><%= user.firstName %> <%= user.lastName %></h1>
-      <a class="update-profile-btn" href="/profile/update">Update Profile</a>  
+      <a class="update-profile-btn" href="/profile/update-profile">Update Profile</a>
     </div>
     <p class="profile-email"><%= user.email %></p>
 
       <% if (user.isTutor) { %>
           <div class="tutor-info">
-            <p class="profile-bio">Bio: <%= user.bio %></p>
-            <p class="profile-availability">Availability: <%= user.availability %></p>
-            <p class="profile-rate">Rate: $<%= user.rate %>/ hour</p>
+            <p class="profile-bio"><b>Bio:</b> <%= user.bio %></p>
+            <p class="profile-availability"><b>Availability:</b> <%= user.availability %></p>
+            <p class="profile-rate"><b>Rate:</b> $<%= user.rate %>/ hour</p>
 
               <% if (user.isOnline && user.isInPerson) { %>
-                  <p class="profile-meeting">Willing to meet online or in person.</p>
+                  <p class="profile-meeting"><b>Meeting Style: </b>Online or In-Person.</p>
               <% } else if (user.isOnline) { %>
-                  <p class="profile-meeting">Willing to meet Online.</p>
+                  <p class="profile-meeting"><b>Meeting Style: </b>Online only</p>
               <% } else if (user.isInPerson) { %>
-                  <p class="profile-meeting">Willing to meet in person.</p>
+                  <p class="profile-meeting"><b>Meeting Style: </b>In-Person only</p>
               <% } %>
-
+              
               <% if (classes.length >= 1) { %>
-                  <p class="profile-classes">Classes Taught:</p>
+                  <div class="classes-taught-header">
+                    <p class="profile-classes"><b>Classes Taught:</b></p>
+                    <a class="update-profile-btn" href="/profile/update-classes">Update Classes Taught</a>
+                  </div>
                   <%- include("./partials/class-list.ejs") %>
+              <% } 
+              else { %>
+                <a class="update-profile-btn" href="/profile/update-classes">Select Classes To Tutor</a>
               <% } %>
           </div>
       <% } else { %>
-          <p class="tutor-signup">Want to make some money as a Tutor? Sign up to be an anTutor <a href="/profile/tutor-sign-up">here</a>!</p>
+          <p class="tutor-signup">Want to make some money as a Tutor? Sign up to be an AnTutor <a href="/profile/tutor-sign-up">here</a>!</p>
       <% } %>
+      <a class="back-button" href="javascript:history.back()">Back</a>
     </div>
   </body>
   </html>

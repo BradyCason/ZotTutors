@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AnTutor Connect</title>
+  <link rel="stylesheet" href="/stylesheets/styles.css">
+  <link rel="stylesheet" href="/stylesheets/profile.css">
+  <link rel="icon" href="/images/logo.png">
+</head>
+<body>
+  <%- include("./partials/menu-bar.ejs") %>
+  <div class="update-classes-body">
+    <div class="class-search-container">
+      <div class="profile-header">
+        <h1 class="title">Update Classes Taught</h1>
+        <a class="update-profile-btn" href="/profile">Back to Profile</a>
+      </div>
+      <h3>Choose which classes you are able to tutor in:</h3>
+      <form action="/profile/search-classes" method="POST">
+          <div class="profile-search">
+              <label for="searchTerm">Class Search: </label>
+              <input id="searchTerm" name="searchTerm" placeholder="Search" type="text" />
+              <label for="department">Choose a department: </label>
+              <div>
+              <select name="department" id="department">
+                  <option value="All" selected>All</option>
+                  <% departments.forEach(dep => { %>
+                      <option value="<%= dep.department %>"><%= dep.department %> - <%= dep.departmentName %></option>
+                  <% }) %>
+              </select>
+              <button class="update-profile-btn" type="submit">Search</button>
+              </div>
+          </div>
+      </form>
+      <%- include("./partials/errors.ejs") %>
+      <a href="/profile/update-classes?searchTerm=&department=">See all</a>
+      <% if (classes.length > 0) { %>
+      <hr>
+      <div class="list update-class-list">
+        <% if (classes.length > 0) { %>
+          <h2 class="results-title">Found <%= classes.length %> Classes: </h2>
+          <% classes.forEach(function(classItem) { %>
+            <form action="/profile/add-class/<%= classItem.id %>" method="POST">
+              <div class="update-class-class">
+                <a href="/search/class/<%= classItem.id %>" class="list-button"><%= classItem.classCode %> - <%= classItem.className %> (<%= classItem.numTutors %> Tutors)</a>
+                <button type="submit" class="add-button add-button-<%= classItem.id.replace("&", "") %>">Add</button>
+              </div>
+            </form>
+          <% }) %>
+        <% } 
+        else if (searched) { %>
+          <h2 class="results-title">No Results Found</h2>
+        <% } %>
+      </div>
+      <% } %>
+    </div>
+    
+    <div class="classes-taught-container">
+      <h3>Classes Selected: </h3>
+      <% if (classesTaught.length > 0) { %>
+        <% classesTaught.forEach(function(classItem) { %>
+          <div class="update-class-class">
+            <form action="/profile/remove-class/<%= classItem.id %>" method="POST">
+              <a href="/search/class/<%= classItem.id %>" class="list-button"><%= classItem.classCode %></a>
+              <button type="submit" class="remove-button">Remove</button>
+            </form>
+          </div>
+        <% }) %>
+      <% } %>
+    </div>
+  </div>
+  
+  <input type="hidden" id="classes" value="<%= JSON.stringify(classes) %>">
+  <script>
+    function addRemoveButton(button) {
+      button.addEventListener('click', async function(event) {
+          event.preventDefault();
+
+          const form = this.closest('form');
+          const classItemDiv = form.closest('.update-class-class');
+          const actionUrl = form.action;
+
+          // Send an AJAX request to the server
+          fetch(actionUrl, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams(new FormData(form)) // Send form data
+          })
+          .then(response => {
+            if (response.ok) {
+              // Remove the class item from the DOM if the request is successful
+              classItemDiv.remove();
+            } else {
+              // Handle errors if needed
+              alert('Failed to remove the class. Please try again.');
+            }
+          })
+          .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred. Please try again.');
+          });
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const removeButtons = document.querySelectorAll('.remove-button');
+      const classesTaughtContainer = document.querySelector('.classes-taught-container');
+      const classes = JSON.parse(document.getElementById('classes').value)
+
+      removeButtons.forEach(button => {
+        addRemoveButton(button)
+      });
+
+      classes.forEach(classItem => {
+        const button = document.querySelector(".add-button-" + classItem.id.replace("&", ""))
+        button.addEventListener('click', async function(event) {
+          event.preventDefault();
+
+          const form = this.closest('form');
+          const actionUrl = form.action;
+
+          fetch(actionUrl, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams(new FormData(form))
+          })
+          .then(response => {
+            if (response.ok) {
+              const newClassDiv = document.createElement('div');
+              newClassDiv.className = 'update-class-class';
+
+              const form = document.createElement('form');
+              form.action = '/profile/remove-class/' + classItem.id;
+              form.method = 'POST';
+
+              const anchor = document.createElement('a');
+              anchor.href = '/search/class/' + classItem.id;
+              anchor.className = 'list-button';
+              anchor.textContent = classItem.classCode;
+
+              const button = document.createElement('button');
+              button.type = 'submit';
+              button.className = 'remove-button';
+              button.textContent = 'Remove';
+
+              form.appendChild(anchor);
+              form.appendChild(button);
+
+              newClassDiv.appendChild(form);
+              classesTaughtContainer.appendChild(newClassDiv);
+              addRemoveButton(button)
+            }
+          })
+          .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred. Please try again.');
+          });
+        });
+      });
+    });
+  </script>
+</body>
+</html>

@@ -20,8 +20,9 @@
             <label for="department">Choose a department: </label>
             <select name="department" id="department">
               <option value="All" selected>All</option>
-              <option value="ACENG">AC ENG</option>
-              <option value="AFAM">AFAM</option>
+              <% departments.forEach(dep => { %>
+                <option value="<%= dep.department %>"><%= dep.department %> - <%= dep.departmentName %></option>
+              <% }) %>
             </select>
             <button type="submit">Search</button>
           </form>
@@ -39,11 +40,11 @@
       </div>
       <div class="search-results">
         <% if (classes.length > 0) { %>
-          <h2 class="results-title">Classes: </h2>
+          <h2 class="results-title">Found <%= classes.length %> Classes: </h2>
           <%- include("./partials/class-list.ejs") %>
         <% } 
         else if (tutors.length > 0) { %>
-          <h2 class="results-title">Tutors: </h2>
+          <h2 class="results-title">Found <%= tutors.length %> Tutors: </h2>
           <%- include("./partials/tutor-list.ejs") %>
         <% } 
         else if (searched) { %>

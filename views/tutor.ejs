@@ -12,9 +12,9 @@
     <%- include("./partials/menu-bar.ejs") %>
     <div class="profile-container">
       <div class="profile-header">
-        <h1 class="profile-name"><%= tutor.firstName %> <%= tutor.lastName %></h1>
+        <h1 class="profile-name">Tutor: <%= tutor.firstName %> <%= tutor.lastName %></h1>
       </div>
-      <p class="profile-email"><%= tutor.email %></p>
+      <p class="profile-email">Contact: <%= tutor.email %></p>
       <div class="tutor-info">
         <p class="profile-bio">Bio: <%= tutor.bio %></p>
         <p class="profile.availability">Availability: <%= tutor.availability %></p>
@@ -33,7 +33,7 @@
           <%- include("./partials/class-list.ejs") %>
         <% } %>
       </div>
-      <a class="back-button" href="/search">Back to Search</a>
+      <a class="back-button" href="javascript:history.back()">Back</a>
     </div>
 </body>
 </html>

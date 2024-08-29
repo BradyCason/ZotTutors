@@ -21,7 +21,6 @@ body {
   padding: 20px;
 }
 
-
 /* Navbar */
 .navbar {
   margin-top: -20px;
@@ -50,6 +49,7 @@ body {
   font-size: 1.8em;
   font-weight: bold;
   color: white;
+  text-decoration: none;
 }
 
 .navbar-links {
