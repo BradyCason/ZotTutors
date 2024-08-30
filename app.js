@@ -1,7 +1,8 @@
 const express = require("express");
 const session = require("express-session");
-const passport = require('./passport');
 const path = require('path');
+const passport = require('./passport');
+const flash = require('connect-flash');
 
 const authRouter = require("./routes/authRouter");
 const profileRouter = require("./routes/profileRouter");
@@ -16,6 +17,7 @@ const assetsPath = path.join(__dirname, "public");
 app.use(express.static(assetsPath));
 
 app.use(session({ secret: "cats", resave: false, saveUninitialized: false }));
+app.use(flash())
 app.use(passport.session());
 app.use(express.urlencoded({ extended: true }));
 

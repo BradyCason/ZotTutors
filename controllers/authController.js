@@ -50,12 +50,24 @@ const signupPost = [
 function loginPost(req, res, next){
     passport.authenticate("local", {
         successRedirect: "/",
-        failureRedirect: "/"
+        failureRedirect: "/log-in",
+        failureFlash: true
     })(req, res, next);
 }
 
 async function loginGet(req, res, next){
-    res.render("login", {numUsers: await db.getNumUsers()})
+    const errorMessages = req.flash('error');
+    if (errorMessages){
+        const errors = errorMessages.map(err => {return {msg: err}})
+        res.render("login", {
+            numUsers: await db.getNumUsers(),
+            errors: errors
+        })
+    }
+    else{
+        res.render("login", {numUsers: await db.getNumUsers()})
+    }
+    
 }
 
 function logoutGet(req, res, next) {

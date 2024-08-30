@@ -71,7 +71,31 @@
   </div>
   
   <input type="hidden" id="classes" value="<%= JSON.stringify(classes) %>">
+  <input type="hidden" id="classesTaught" value="<%= JSON.stringify(classesTaught) %>">
   <script>
+    function loadClasses() {
+      const savedClasses = JSON.parse(localStorage.getItem('classesTaught')) || [];
+      const container = document.querySelector('.classes-taught-container');
+
+      container.innerHTML = '<h3>Classes Selected: </h3>'; // Reset the container
+
+      if (savedClasses.length > 0) {
+          savedClasses.forEach(classItem => {
+              const classDiv = document.createElement('div');
+              classDiv.classList.add('update-class-class');
+              classDiv.dataset.classId = classItem.id;
+              classDiv.dataset.classCode = classItem.code;
+              classDiv.innerHTML = `
+                  <form action="/profile/remove-class/${classItem.id}" method="POST">
+                      <a href="/search/class/${classItem.id}" class="list-button">${classItem.classCode}</a>
+                      <button type="submit" class="remove-button">Remove</button>
+                  </form>
+              `;
+              container.appendChild(classDiv);
+          });
+      }
+    }
+
     function addRemoveButton(button) {
       button.addEventListener('click', async function(event) {
           event.preventDefault();
@@ -91,7 +115,13 @@
           .then(response => {
             if (response.ok) {
               // Remove the class item from the DOM if the request is successful
+              const classId = classItemDiv.dataset.classId
               classItemDiv.remove();
+
+              let savedClasses = JSON.parse(localStorage.getItem('classesTaught')) || [];
+              savedClasses = savedClasses.filter(item => item.id !== classId);
+              localStorage.setItem('classesTaught', JSON.stringify(savedClasses));
+
             } else {
               // Handle errors if needed
               alert('Failed to remove the class. Please try again.');
@@ -105,6 +135,14 @@
     }
 
     document.addEventListener('DOMContentLoaded', function() {
+      const initialClassesTaught = JSON.parse(document.getElementById('classesTaught').value)
+      if (performance.navigation.type === 2) {
+        loadClasses();
+      }
+      else{
+        localStorage.setItem('classesTaught', JSON.stringify(initialClassesTaught));
+      }
+
       const removeButtons = document.querySelectorAll('.remove-button');
       const classesTaughtContainer = document.querySelector('.classes-taught-container');
       const classes = JSON.parse(document.getElementById('classes').value)
@@ -153,6 +191,10 @@
               newClassDiv.appendChild(form);
               classesTaughtContainer.appendChild(newClassDiv);
               addRemoveButton(button)
+
+              const savedClasses = JSON.parse(localStorage.getItem('classesTaught')) || [];
+              savedClasses.push({ id: classItem.id, classCode: classItem.classCode });
+              localStorage.setItem('classesTaught', JSON.stringify(savedClasses));
             }
           })
           .catch(error => {

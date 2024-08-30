@@ -20,6 +20,7 @@
         <input class="auth-form" id="email" name="email" placeholder="Email" type="email" />
         <label for="password">Password</label>
         <input id="password" name="password" placeholder="Password" type="password" />
+        <%- include("./partials/errors.ejs") %>
         <div class="auth-buttons">
           <button type="submit">Log In</button>
           <a href="/search">Log In as Guest</a>
