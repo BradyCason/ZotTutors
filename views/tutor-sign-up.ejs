@@ -45,8 +45,8 @@
           });
 
           const session = await response.json();
-          //const stripe = Stripe('pk_test_51PtDdd08ah2yyFOSVuWlfwRwvhfX8nAJZEepPBEAqRnzmjUUuHnAGZh9Lv2ocdppkirOg9tTHrgCmbOILZyJn2MF00h5XqFANF');
-          const stripe = Stripe('pk_live_51PtDdd08ah2yyFOSQhvSU40WebElIj6gsj2iBgRKXvpIy2Fm6Zp6VG1lFRKCc63jT7zMQA9Y8INvsWW4sJBJrlRf00UiNl67O0');
+          const stripe = Stripe('pk_test_51PtDdd08ah2yyFOSVuWlfwRwvhfX8nAJZEepPBEAqRnzmjUUuHnAGZh9Lv2ocdppkirOg9tTHrgCmbOILZyJn2MF00h5XqFANF');
+          //const stripe = Stripe('pk_live_51PtDdd08ah2yyFOSQhvSU40WebElIj6gsj2iBgRKXvpIy2Fm6Zp6VG1lFRKCc63jT7zMQA9Y8INvsWW4sJBJrlRf00UiNl67O0');
           await stripe.redirectToCheckout({ sessionId: session.id });
       });
   </script>
