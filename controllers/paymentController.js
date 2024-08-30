@@ -1,6 +1,6 @@
 const db = require("../db/queries");
 const stripe = require('stripe')(process.env.STRIPE_KEY);
-console.log(process.env.STRIPE_KEY)
+console.log(process.env)
 
 async function createCheckoutSession(req, res) {
     try {
