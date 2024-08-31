@@ -1,5 +1,17 @@
-<div class="list">
+<!-- <div class="list">
     <% if (tutors.length > 0) { tutors.forEach(function(tutor) { %>
         <a href="/search/tutor/<%= tutor.id %>" class="list-button"><%= tutor.firstName %> <%= tutor.lastName %></a>
     <% })}; %>
+</div> -->
+
+<div class="list">
+    <% if (tutors.length > 0) { tutors.forEach(function(tutor) { %>
+        <a href="/search/tutor/<%= tutor.id %>" class="tutor-list-button">
+            <div class="tutor-header">
+                <span class="tutor-name"><%= tutor.firstName %> <%= tutor.lastName %></span>
+                <span class="tutor-rate">$<%= tutor.rate %>/hour</span>
+            </div>
+            <p class="tutor-bio"><%= tutor.bio %></p>
+        </a>
+    <% })} %>
 </div>

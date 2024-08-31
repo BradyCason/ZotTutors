@@ -12,24 +12,26 @@
     <%- include("./partials/menu-bar.ejs") %>
     <div class="profile-container">
       <div class="profile-header">
-        <h1 class="profile-name">Tutor: <%= tutor.firstName %> <%= tutor.lastName %></h1>
+        <h1 class="profile-name"><b>Tutor:</b> <%= tutor.firstName %> <%= tutor.lastName %></h1>
       </div>
-      <p class="profile-email">Contact: <%= tutor.email %></p>
+      <p class="profile-email"><b>Contact:</b> <%= tutor.email %></p>
       <div class="tutor-info">
-        <p class="profile-bio">Bio: <%= tutor.bio %></p>
-        <p class="profile.availability">Availability: <%= tutor.availability %></p>
-        <p class="profile-rate">Rate: $<%= tutor.rate %>/ hour</p>
+        <p class="profile-bio"><b>Bio:</b> <%= tutor.bio %></p>
+        <p class="profile-availability"><b>Availability:</b> <%= tutor.availability %></p>
+        <p class="profile-rate"><b>Rate:</b> $<%= tutor.rate %>/ hour</p>
         <% if (tutor.isOnline && tutor.isInPerson){ %>
-          <p class="profile-meeting">Willing to meet online or in person.</p>
+          <p class="profile-meeting"><b>Meeting Style:</b> Online or In Person</p>
         <% }
         else if (tutor.isOnline) { %>
-          <p class="profile-meeting">Willing to meet Online.</p>
+          <p class="profile-meeting"><b>Meeting Style:</b> Online</p>
         <% }
         else if (tutor.isInPerson) { %>
-          <p class="profile-meeting">Willing to meet in person.</p>
+          <p class="profile-meeting"><b>Meeting Style:</b> In person</p>
         <% } %>
         <% if (classes.length >= 1) { %>
-          <p class="profile-classes">Classes Taught:</p>
+          <div class="classes-taught-header">
+            <p class="profile-classes"><b>Classes Taught:</b></p>
+          </div>
           <%- include("./partials/class-list.ejs") %>
         <% } %>
       </div>

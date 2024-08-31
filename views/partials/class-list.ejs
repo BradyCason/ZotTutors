@@ -1,5 +1,9 @@
 <div class="list">
     <% if (classes.length > 0) { classes.forEach(function(classItem) { %>
-        <a href="/search/class/<%= classItem.id %>" class="list-button"><%= classItem.classCode %> - <%= classItem.className %> (<%= classItem.numTutors %> Tutors)</a>
+        <a href="/search/class/<%= classItem.id %>" class="class-list-button">
+            <span class="class-code"><%= classItem.classCode %> </span> 
+            <span class="class-name"><%= classItem.className %></span> 
+            (<span class="num-tutors"><%= classItem.numTutors %> Tutors</span>)
+        </a>
     <% })} %>
 </div>

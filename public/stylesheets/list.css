@@ -1,4 +1,4 @@
-.list {
+/* .list {
     list-style-type: none;
     padding: 0;
     margin: 0;
@@ -13,23 +13,123 @@
 .list-button {
     display: inline-block;
     padding: 10px 20px;
-    background-color: #007bff; /* Background color for the button */
-    color: white; /* Text color */
-    text-decoration: none; /* Remove underline from links */
-    border-radius: 5px; /* Rounded corners */
-    font-weight: bold; /* Bold text */
-    font-size: 1em; /* Font size */
-    transition: background-color 0.3s, transform 0.2s; /* Smooth transition effects */
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 1em;
+    transition: background-color 0.3s, transform 0.2s;
     text-align: center;
   }
   
 .list-button:hover {
-    background-color: #0056b3; /* Darker background color on hover */
-    transform: scale(1.05); /* Slightly enlarge button on hover */
-  }
-  
-.no-classes {
-    text-align: center; /* Center the no classes message */
-    color: #888; /* Light gray color */
-    font-style: italic; /* Italicize the message */
-  }
+    background-color: #0056b3;
+    transform: scale(1.05);
+  } */
+
+  .list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.class-list-button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff; /* White background */
+    color: #007bff; /* Blue text color */
+    padding: 15px 20px;
+    text-decoration: none;
+    border-radius: 8px; /* Consistent border radius */
+    font-size: 16px;
+    transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 2px solid #87CEFA; /* Solid border with gradient color */
+}
+
+.class-list-button:hover {
+    background: linear-gradient(135deg, #87CEFA, #00BFFF); /* Full blue gradient on hover */
+    color: #fff; /* White text color on hover */
+    border-radius: 8px; /* Keeps border radius consistent */
+    transform: translateY(-3px); /* Slight lift on hover */
+}
+
+.class-code {
+    font-weight: 700; /* Bold for emphasis */
+}
+
+.class-name {
+    flex: 1; /* Takes up remaining space */
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.num-tutors {
+    font-weight: 400; /* Regular weight */
+    font-size: 14px; /* Slightly smaller for distinction */
+}
+
+.tutor-list-button {
+  min-width: none;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  color: #007bff;
+  padding: 15px 20px;
+  text-decoration: none;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: 2px solid #87CEFA;
+  width: 100%; /* Ensure full width of the container */
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+.tutor-list-button:hover {
+  background: linear-gradient(135deg, #87CEFA, #00BFFF);
+  color: #fff;
+  border-radius: 8px;
+  transform: translateY(-3px);
+}
+
+.tutor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.tutor-name {
+  font-weight: 700;
+  font-size: 18px;
+  flex: 1; /* Takes up remaining space */
+}
+
+.tutor-rate {
+  font-weight: 500;
+  font-size: 16px;
+  color: #28a745;
+  width: 100px; /* Fixed width for consistency */
+  text-align: right;
+}
+
+.tutor-bio {
+  font-weight: 400;
+  font-size: 14px;
+  color: #333;
+  line-height: 1.4;
+  max-height: 50px; /* Limit the height of the bio */
+  overflow: hidden; /* Hide overflowed content */
+  text-overflow: ellipsis; /* Add ellipsis (...) for overflow */
+  margin-top: 5px;
+  white-space: normal; /* Allow wrapping for bio text */
+  box-sizing: border-box; /* Include padding and border in the element's total width */
+}

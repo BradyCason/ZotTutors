@@ -72,13 +72,18 @@
   
 .tutor-info {
     margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
   }
   
   .profile-bio, 
   .profile-availability, 
   .profile-rate,
-  .profile-meeting {
+  .profile-meeting,
+  .classes-taught-header {
     margin-bottom: 10px;
+    width: 100%;
+    text-align: start;
   }
   
   .update-profile-btn, .back-button {
@@ -123,12 +128,6 @@
     align-items: right;
     margin-bottom: 15px;
   }
-
-  .list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
 
 .class-checkbox {
     display: none;
