@@ -32,7 +32,7 @@ app.use("/", authRouter);
 app.use("/search", searchRouter);
 app.use("/profile", ensureAuthenticated, profileRouter);
 app.use("/payment", paymentRouter);
-app.get("/", ensureAuthenticated, (req, res) => {res.render("index", {user: req.user})})
+app.get("/", (req, res) => {res.render("index", {user: req.user})})
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Express app listening on port ${PORT}!`));

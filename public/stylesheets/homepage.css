@@ -1,0 +1,100 @@
+/* Body Background */
+body {
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../images/background1.jpeg') no-repeat center center/cover;
+}
+
+/* Blue Gradient Buttons */
+.cta {
+    background: linear-gradient(135deg, #00aaff, #0072ff); /* Initial gradient */
+    color: #fff;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 25px;
+    transition: background-position 0.3s ease; /* Animate the background position */
+    display: inline-block;
+    font-size: 18px;
+    background-size: 200% 200%; /* Increase the background size to allow for smooth transition */
+    background-position: 0% 0%; /* Start position for the gradient */
+}
+
+.cta:hover {
+    /* background: linear-gradient(135deg, #0072ff, #00aaff); Inverted gradient on hover */
+    background-size: 200% 200%; /* Keep the same size for smooth transition */
+    background-position: 100% 100%; /* End position for the gradient */
+}
+
+/* Hero Section */
+.hero {
+    color: #fff;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.hero-content h1 {
+    font-size: 48px;
+    margin-bottom: 20px;
+    background: linear-gradient(135deg, #87CEFA, #00BFFF);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero-content p {
+    font-size: 18px;
+    margin-bottom: 30px;
+}
+
+/* Features Section */
+.features {
+    display: flex;
+    justify-content: space-around;
+    padding: 50px 0;
+    background-color: #fff;
+}
+
+.feature {
+    text-align: center;
+    width: 30%;
+}
+
+.feature h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #007bff;
+}
+
+.feature p {
+    margin-bottom: 10px;
+}
+
+/* Footer */
+footer {
+    background-color: #007bff;
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+}
+
+.footer-content p {
+    margin-bottom: 10px;
+}
+
+.social-links {
+    list-style: none;
+}
+
+.social-links li {
+    display: inline;
+    margin: 0 10px;
+}
+
+.social-links a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.social-links a:hover {
+    text-decoration: underline;
+}

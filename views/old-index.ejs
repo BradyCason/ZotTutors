@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Zot Tutors</title>
+  <link rel="stylesheet" href="/stylesheets/styles.css">
+  <link rel="stylesheet" href="/stylesheets/home.css">
+  <link rel="icon" href="/images/logo.png">
+</head>
+<body>
+    <%- include("./partials/menu-bar.ejs") %>
+    
+    <div class="homepage-container">
+        <h1>Welcome back, <%= user.firstName %>!</h1>
+        
+        <div class="welcome-section">
+            <p>We're excited to have you back on Zot Tutors. Here, you can easily find and contact tutors who are ready to help you excel in your classes.</p>
+            <p>Use the buttons below to start searching for tutors or to view and update your profile.</p>
+        </div>
+
+        <div class="homepage-buttons">
+            <% if (!user.isTutor) { %>
+                <a href="/profile/tutor-sign-up" class="button">Become a Tutor</a>
+            <% } %>
+            <a href="/search" class="button">Search Tutors</a>
+            <a href="/profile" class="button">View Profile</a>
+        </div>
+    </div>
+</body>
+</html>

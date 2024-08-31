@@ -1,30 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Zot Tutors</title>
-  <link rel="stylesheet" href="/stylesheets/styles.css">
-  <link rel="stylesheet" href="/stylesheets/home.css">
-  <link rel="icon" href="/images/logo.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zot Tutors</title>
+    <link rel="stylesheet" href="/stylesheets/styles.css">
+    <link rel="stylesheet" href="/stylesheets/homepage.css">
+    <link rel="icon" href="/images/logo.png">
 </head>
 <body>
     <%- include("./partials/menu-bar.ejs") %>
-    
-    <div class="homepage-container">
-        <h1>Welcome back, <%= user.firstName %>!</h1>
-        
-        <div class="welcome-section">
-            <p>We're excited to have you back on Zot Tutors. Here, you can easily find and contact tutors who are ready to help you excel in your classes.</p>
-            <p>Use the buttons below to start searching for tutors or to view and update your profile.</p>
-        </div>
 
-        <div class="homepage-buttons">
-            <% if (!user.isTutor) { %>
-                <a href="/profile/tutor-sign-up" class="button">Become a Tutor</a>
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Find the Perfect Tutor for You</h1>
+            <p>Connecting you with the best tutors to help you achieve your academic goals.</p>
+            <% if (user) { %>
+                <% if (user.isTutor) { %>
+                    <a href="/profile" class="cta">View Profile</a>
+                <% }
+                else { %>
+                    <a href="/profile/tutor-sign-up" class="cta">Become a Tutor</a>
+                <% } %>
+            <% } 
+            else { %>
+                <a href="/log-in" class="cta">Log In</a>
             <% } %>
-            <a href="/search" class="button">Search Tutors</a>
-            <a href="/profile" class="button">View Profile</a>
+            <a href="/search" class="cta">Search Tutors</a>
         </div>
-    </div>
+    </section>
+
+    <section class="features">
+        <div class="feature">
+            <h2>Flexible Scheduling</h2>
+            <p>Book sessions that fit your schedule, whether online or in person. Manage your time effectively and never miss out on a tutoring session.</p>
+            <a href="/search" class="cta">Learn More</a>
+        </div>
+        <div class="feature">
+            <h2>Become a Tutor</h2>
+            <p>Join our platform in minutes, start tutoring, and earn money while helping fellow students succeed. It's flexible, rewarding, and fits around your college schedule.</p>
+            <a href="/profile/tutor-sign-up" class="cta">Get Started</a>
+        </div>
+        <div class="feature">
+            <h2>Any Class at UCI</h2>
+            <p>Whether it’s computer science, engineering, or any other subject, we have tutors ready to help you succeed in any class at UCI.</p>
+            <a href="/search" class="cta">Find Your Tutor</a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2024 ZotTutors. All rights reserved.</p>
+        </div>
+    </footer>
 </body>
 </html>
